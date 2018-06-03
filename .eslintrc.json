@@ -96,9 +96,13 @@
     "prettier/prettier": [
       "error",
       {
-        "trailingComma": "es5",
+        "useTabs": false,
+        "printWidth": 120,
+        "tabWidth": 2,
         "singleQuote": true,
-        "printWidth": 120
+        "trailingComma": "all",
+        "jsxBracketSameLine": false,
+        "parser": "babylon"
       }
     ],
     "jsx-a11y/href-no-hash": "off",
@@ -115,6 +119,7 @@
     "prettier",
     "react",
     "jsx-a11y",
-    "jss"
+    "jss",
+    "json"
   ]
 }
