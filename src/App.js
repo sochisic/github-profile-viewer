@@ -41,8 +41,7 @@ class Form extends Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    // this.getUser = this.getUser.bind(this);
-    // this.getData = this.getData.bind(this);
+    this.getUser = this.getUser.bind(this);
   }
 
   state = {
@@ -50,32 +49,6 @@ class Form extends Component {
     isLoading: false,
     userData: null,
   };
-
-  // getData() {
-  //   async function getData() {
-  //     try {
-  //       const data = await getDefaultUser();
-  //       console.log(`getData async ${data}`);
-  //       return data;
-  //     } catch (e) {
-  //       console.log(`Kek err ${e}`);
-  //     }
-  //   }
-  // }
-
-  componentDidMount() {
-    this.setState({
-      isLoading: true,
-      errorMessage: null,
-      userData: null,
-    });
-
-    let { value } = this.state;
-
-    if (!value) {
-      this.getUser('sochisic');
-    }
-  }
 
   getUser(user) {
     this.setState({
