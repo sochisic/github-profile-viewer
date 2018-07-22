@@ -64,31 +64,17 @@ class Form extends Component {
   // }
 
   componentDidMount() {
-    // console.log(
-    //   JSON.stringify({
-    //     Authorization: 'Token token=cf4bd909fb411b8210f7dff87db1713da28649cd',
-    //   }),
-    // );
-    // const getDefaultUser = () => {
-    //   fetch('http://api.github.com/users/sochisic')
-    //     .then(response => response.json())
-    //     .then(json => {
-    //       console.log(json, `json`);
-    //       return json;
-    //     })
-    //     .catch(e => console.log(`getDefaultUser Promise: ${e}`));
-    // };
-    // this.getData()
-    //   .then(data => {
-    //     console.log(`getData! ${data}`);
-    //     this.setState({
-    //       userData: data,
-    //       isLoading: false,
-    //     });
-    //   })
-    //   .catch(e => {
-    //     console.log(e);
-    //   });
+    this.setState({
+      isLoading: true,
+      errorMessage: null,
+      userData: null,
+    });
+
+    let { value } = this.state;
+
+    if (!value) {
+      this.getUser('sochisic');
+    }
   }
 
   getUser(user) {
