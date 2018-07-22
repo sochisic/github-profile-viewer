@@ -12,6 +12,7 @@ import FaceIcon from './Faceicon';
 const styles = {
   card: {
     maxWidth: 345,
+    minWidth: 345,
   },
   media: {
     height: 0,
@@ -19,8 +20,7 @@ const styles = {
   },
 };
 
-function SimpleMediaCard(props) {
-  const { classes, data } = props;
+function SimpleMediaCard({ classes, data }) {
   return (
     <div>
       <Card className={classes.card}>
@@ -39,9 +39,6 @@ function SimpleMediaCard(props) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" color="primary">
-            Поделиться.
-          </Button>
           <Button
             size="small"
             color="primary"
