@@ -12,18 +12,17 @@ const styles = theme => ({
     alignItems: 'flex-end',
   },
   icon: {
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing.unit,
   },
   iconHover: {
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing.unit,
     '&:hover': {
       color: red[800],
     },
   },
 });
 
-function SvgIcons(props) {
-  const { classes } = props;
+function SvgIcons({ classes }) {
   return (
     <div className={classes.root}>
       <FaceIcon className={classes.icon} color="primary" />

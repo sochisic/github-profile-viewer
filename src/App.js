@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -6,8 +6,9 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Typography from '@material-ui/core/Typography';
 
-import Start from './components/start';
+import Header from './components/Header';
 import Card from './components/Card';
 
 const styles = theme => ({
@@ -15,7 +16,7 @@ const styles = theme => ({
     flexGrow: 1,
   },
   paper: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing.unit,
     textAlign: 'center',
     color: theme.palette.text.secondary,
     minWidth: 313,
@@ -29,14 +30,19 @@ const styles = theme => ({
   card: {
     margin: 50,
   },
+  intro: {
+    fontSize: 'large',
+    textAlign: 'center',
+  },
 });
 
-class Form extends React.Component {
+class Form extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
-    this.getUser = this.getUser.bind(this);
+    // this.getUser = this.getUser.bind(this);
+    // this.getData = this.getData.bind(this);
   }
 
   state = {
@@ -45,88 +51,111 @@ class Form extends React.Component {
     userData: null,
   };
 
-  componentWillMount() {
-    this.setState({ isLoading: true });
+  // getData() {
+  //   async function getData() {
+  //     try {
+  //       const data = await getDefaultUser();
+  //       console.log(`getData async ${data}`);
+  //       return data;
+  //     } catch (e) {
+  //       console.log(`Kek err ${e}`);
+  //     }
+  //   }
+  // }
 
-    console.log(
-      JSON.stringify({
-        Authorization: 'Token token=cf4bd909fb411b8210f7dff87db1713da28649cd',
-      }),
-    );
-
-    let getDefaultUser = () =>
-      fetch('http://api.github.com/users/sochisic')
-        .then(response => response.json())
-        .then(json => {
-          console.log(json);
-          return json;
-        })
-        .catch(e => console.log(`getDefaultUser Promise: ${e}`));
-
-    const getData = async () => {
-      try {
-        let data = await getDefaultUser();
-        return data;
-      } catch (e) {
-        console.log(`Kek err ${e}`);
-      }
-    };
-
-    getData()
-      .then(data => {
-        console.log(data);
-        this.setState({
-          userData: data,
-          isLoading: false,
-        });
-      })
-      .catch(e => {
-        console.log(e);
-      });
+  componentDidMount() {
+    // console.log(
+    //   JSON.stringify({
+    //     Authorization: 'Token token=cf4bd909fb411b8210f7dff87db1713da28649cd',
+    //   }),
+    // );
+    // const getDefaultUser = () => {
+    //   fetch('http://api.github.com/users/sochisic')
+    //     .then(response => response.json())
+    //     .then(json => {
+    //       console.log(json, `json`);
+    //       return json;
+    //     })
+    //     .catch(e => console.log(`getDefaultUser Promise: ${e}`));
+    // };
+    // this.getData()
+    //   .then(data => {
+    //     console.log(`getData! ${data}`);
+    //     this.setState({
+    //       userData: data,
+    //       isLoading: false,
+    //     });
+    //   })
+    //   .catch(e => {
+    //     console.log(e);
+    //   });
   }
 
   getUser(user) {
+    this.setState({
+      isLoading: true,
+      errorMessage: null,
+      userData: null,
+    });
+
     let getUser = user =>
       fetch(`http://api.github.com/users/${user}`)
         .then(response => response.json())
-        .then(json => {
-          console.log(json);
-          return json;
-        })
-        .catch(e => console.log(`getDefaultUser Promise: ${e}`));
+        .then(data => data)
+        .catch(e => e);
 
     const getData = async () => {
       try {
         let data = await getUser(user);
         return data;
       } catch (e) {
-        console.log(`Kek err ${e}`);
+        throw new Error(e);
       }
     };
+
+    getData()
+      .then(data => {
+        if (data.message) {
+          this.setState({
+            isLoading: false,
+            errorMessage: data.message,
+          });
+        }
+        if (!data.message) {
+          this.setState({
+            isLoading: false,
+            userData: data,
+          });
+        }
+      })
+      .catch(e => {
+        console.log(e.message, 'Похоже такого пользователя нет');
+      });
   }
 
   handleClick() {
     const { value } = this.state;
-    console.log('click!', value);
-
-    console.log(this.getUser(value));
+    this.getUser(value);
   }
 
-  handleChange(e) {
+  handleChange({ target: { value } }) {
     this.setState({
-      value: e.target.value,
+      value: value,
     });
   }
 
   render() {
     const { classes } = this.props;
-    const { isLoading, userData } = this.state;
+    const { isLoading, userData, errorMessage } = this.state;
 
     return (
       <div className={classes.root}>
-        <Start />
+        <Header />
         <Grid container spacing={24} alignItems={'center'} direction={'column'}>
           <Grid item xs={12}>
+            <p className={classes.intro}>
+              Проверим есть ли ты на <code className={classes.code}>Github</code>.
+            </p>
             <Paper className={classes.paper}>
               <TextField
                 id="search"
@@ -142,7 +171,9 @@ class Form extends React.Component {
             </Paper>
           </Grid>
           <Grid item xs={8}>
-            {isLoading ? <CircularProgress className={classes.card} /> : <Card data={userData || {}} />}
+            {userData ? <Card data={userData} /> : null}
+            {isLoading ? <CircularProgress className={classes.card} /> : null}
+            {errorMessage ? <Typography component="p">{errorMessage}</Typography> : null}
           </Grid>
         </Grid>
       </div>
@@ -150,32 +181,4 @@ class Form extends React.Component {
   }
 }
 
-// function FullWidthGrid(props) {
-//   const { classes } = props;
-
-//   return (
-//     <div className={classes.root}>
-//       <Start />
-//       <Grid container spacing={24} alignItems={'center'} direction={'column'}>
-//         <Grid item xs={12}>
-//           <Paper className={classes.paper}>
-//             <TextField id="search" label="Поиск тут" type="search" className={classes.textField} margin="normal" />
-//             <Button variant="outlined" color="primary" className={classes.button}>
-//               Найти
-//             </Button>
-//           </Paper>
-//         </Grid>
-//         <Grid item xs={8}>
-//           <Card />
-//         </Grid>
-//       </Grid>
-//     </div>
-//   );
-// }
-
-// FullWidthGrid.propTypes = {
-//   classes: PropTypes.object.isRequired,
-// };
-
-// export default withStyles(styles)(FullWidthGrid);
 export default withStyles(styles)(Form);

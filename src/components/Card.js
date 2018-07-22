@@ -7,7 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import FaceIcon from './Faceicon';
+// import FaceIcon from './Faceicon';
+import FaceIcon from '@material-ui/icons/Face';
 
 const styles = {
   card: {
@@ -18,17 +19,16 @@ const styles = {
     height: 0,
     paddingTop: '56.25%', // 16:9
   },
+  actions: {
+    justifyContent: 'center',
+  },
 };
 
 function SimpleMediaCard({ classes, data }) {
   return (
     <div>
       <Card className={classes.card}>
-        <CardMedia
-          className={classes.media}
-          image="https://github.com/sochisic.png?size=400"
-          title="Contemplative Reptile"
-        />
+        <CardMedia className={classes.media} image={data.avatar_url} title="Contemplative Reptile" />
         <CardContent>
           <Typography gutterBottom variant="headline" component="h2">
             {data.name}
@@ -38,8 +38,9 @@ function SimpleMediaCard({ classes, data }) {
             {data.company}
           </Typography>
         </CardContent>
-        <CardActions>
+        <CardActions className={classes.actions}>
           <Button
+            fullWidth
             size="small"
             color="primary"
             onClick={() => {
@@ -56,6 +57,7 @@ function SimpleMediaCard({ classes, data }) {
 
 SimpleMediaCard.propTypes = {
   classes: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(SimpleMediaCard);
