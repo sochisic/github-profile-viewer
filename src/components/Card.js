@@ -33,10 +33,9 @@ function SimpleMediaCard({ classes, data }) {
           <Typography gutterBottom variant="headline" component="h2">
             {data.name}
           </Typography>
-          <Typography component="p">
-            {data.bio}
-            {data.company}
-          </Typography>
+          <Typography component="p">{data.bio}</Typography>
+          <Typography component="p">{data.company}</Typography>
+          <Typography component="p">{data.location}</Typography>
         </CardContent>
         <CardActions className={classes.actions}>
           <Button
