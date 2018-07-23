@@ -42,6 +42,7 @@ class Form extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.getUser = this.getUser.bind(this);
+    this.handleCardClose = this.handleCardClose.bind(this);
   }
 
   state = {
@@ -103,6 +104,15 @@ class Form extends Component {
     });
   }
 
+  handleCardClose() {
+    this.setState({
+      value: '',
+      isLoading: false,
+      userData: null,
+      errorMessage: null,
+    });
+  }
+
   render() {
     const { classes } = this.props;
     const { isLoading, userData, errorMessage } = this.state;
@@ -123,14 +133,21 @@ class Form extends Component {
                 className={classes.textField}
                 margin="normal"
                 onChange={this.handleChange}
+                value={this.state.value}
               />
-              <Button variant="outlined" color="primary" className={classes.button} onClick={this.handleClick}>
+              <Button
+                variant="outlined"
+                color="primary"
+                disabled={!this.state.value}
+                className={classes.button}
+                onClick={this.handleClick}
+              >
                 Найти
               </Button>
             </Paper>
           </Grid>
           <Grid item xs={8}>
-            {userData ? <Card data={userData} /> : null}
+            {userData ? <Card data={userData} handleCardClose={this.handleCardClose} /> : null}
             {isLoading ? <CircularProgress className={classes.card} /> : null}
             {errorMessage ? <Typography component="p">{errorMessage}</Typography> : null}
           </Grid>

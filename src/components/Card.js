@@ -7,13 +7,14 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-// import FaceIcon from './Faceicon';
 import FaceIcon from '@material-ui/icons/Face';
+import Close from '@material-ui/icons/Close';
 
 const styles = {
   card: {
     maxWidth: 345,
     minWidth: 345,
+    position: 'relative',
   },
   media: {
     height: 0,
@@ -22,12 +23,22 @@ const styles = {
   actions: {
     justifyContent: 'center',
   },
+  close: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+  },
 };
 
-function SimpleMediaCard({ classes, data }) {
+function SimpleMediaCard({ classes, data, handleCardClose }) {
+  console.log(handleCardClose);
+
   return (
     <div>
       <Card className={classes.card}>
+        <Button mini variant="fab" color="primary" aria-label="Add" className={classes.close} onClick={handleCardClose}>
+          <Close />
+        </Button>
         <CardMedia className={classes.media} image={data.avatar_url} title="Contemplative Reptile" />
         <CardContent>
           <Typography gutterBottom variant="headline" component="h2">
