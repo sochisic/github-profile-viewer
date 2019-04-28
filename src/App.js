@@ -59,7 +59,7 @@ class Form extends Component {
     });
 
     let getUser = user =>
-      fetch(`http://api.github.com/users/${user}`)
+      fetch(`https://api.github.com/users/${user}`)
         .then(response => response.json())
         .then(data => data)
         .catch(e => e);
